@@ -269,11 +269,13 @@ bool SimpleVector<Type>::IsEmpty() const noexcept {
 
 template <typename Type>
 Type& SimpleVector<Type>::operator[](size_t index) noexcept {
+    assert(index < size_);
     return begin()[index];
 }
 
 template <typename Type>
 const Type& SimpleVector<Type>::operator[](size_t index) const noexcept {
+    assert(index < size_);
     return begin()[index];
 }
 
@@ -360,6 +362,8 @@ void SimpleVector<Type>::PushBack(T&& item) {
 template <typename Type>
 template <typename T>
 typename SimpleVector<Type>::Iterator SimpleVector<Type>::Insert(ConstIterator pos, T&& value) {
+    assert(pos >= begin() && pos <= end());
+
     if (pos == end() && capacity_ > size_) {
         array_[size_++] = std::move(value);
         return end() - 1;
@@ -381,11 +385,14 @@ typename SimpleVector<Type>::Iterator SimpleVector<Type>::Insert(ConstIterator p
 
 template <typename Type>
 void SimpleVector<Type>::PopBack() noexcept {
+    assert(size_);
     --size_;
 }
 
 template <typename Type>
 typename SimpleVector<Type>::Iterator SimpleVector<Type>::Erase(ConstIterator pos) {
+    assert(pos >= begin() && pos < end());
+
     size_t erase_index = pos - cbegin();
     Iterator new_first = &(array_[erase_index]);
     std::move(begin() + erase_index + 1, end(), new_first);

@@ -32,12 +32,25 @@ class ArrayPtr {
     // Запрещаем копирование
     ArrayPtr(const ArrayPtr& other) = delete;
 
+    ArrayPtr(ArrayPtr&& other) {
+        *this = other;
+    }
+
     ~ArrayPtr() {
         delete[] raw_ptr_;
     }
 
     // Запрещаем присваивание
     ArrayPtr& operator=(const ArrayPtr& other) = delete;
+
+    ArrayPtr& operator=(ArrayPtr&& rhs) {
+        if (this == &rhs) {
+            return *this;
+        }
+        ArrayPtr empty;
+        this->swap(rhs);
+        rhs.swap(empty);
+    }
 
     // Прекращает владением массивом в памяти, возвращает значение адреса массива
     // После вызова метода указатель на массив должен обнулиться
@@ -69,7 +82,6 @@ class ArrayPtr {
 
     // Обменивается значениям указателя на массив с объектом other
     void swap(ArrayPtr& other) noexcept {
-        // ArrayPtr::swap(&raw_ptr_, &(other.raw_ptr_));
         std::swap(raw_ptr_, other.raw_ptr_);
     }
 
