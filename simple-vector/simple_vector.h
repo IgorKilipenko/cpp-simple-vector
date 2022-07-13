@@ -111,8 +111,6 @@ class SimpleVector {
     template <class T>
     void PushBack(T&& item);
 
-    // void PushBack(Type&& item);
-
     /// Вставляет значение value в позицию pos.
     /// Возвращает итератор на вставленное значение
     /// Если перед вставкой значения вектор был заполнен полностью,
