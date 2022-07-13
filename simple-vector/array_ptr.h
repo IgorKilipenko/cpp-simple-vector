@@ -44,7 +44,7 @@ class ArrayPtr {
     ArrayPtr& operator=(const ArrayPtr& other) = delete;
 
     ArrayPtr& operator=(ArrayPtr&& rhs) {
-        if (this == &rhs) {
+        if (this->raw_ptr_ == &(rhs.raw_ptr_)) {
             return *this;
         }
         ArrayPtr empty;
