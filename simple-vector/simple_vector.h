@@ -246,6 +246,9 @@ SimpleVector<Type>& SimpleVector<Type>::operator=(const SimpleVector& rhs) {
 
 template <typename Type>
 SimpleVector<Type>& SimpleVector<Type>::operator=(SimpleVector&& rhs) {
+    if (*this == rhs) {
+        return *this;
+    }
     SimpleVector<Type> empty{};
     this->swap(rhs);
     rhs.swap(empty);
