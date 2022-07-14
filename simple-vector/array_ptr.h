@@ -33,7 +33,10 @@ class ArrayPtr {
     ArrayPtr(const ArrayPtr& other) = delete;
 
     ArrayPtr(ArrayPtr&& other) {
-        *this = other;
+        if (this->raw_ptr_ == other.raw_ptr_) {
+            return;
+        }
+        this->swap(other);
     }
 
     ~ArrayPtr() {
@@ -44,12 +47,18 @@ class ArrayPtr {
     ArrayPtr& operator=(const ArrayPtr& other) = delete;
 
     ArrayPtr& operator=(ArrayPtr&& rhs) {
-        if (this->raw_ptr_ == &(rhs.raw_ptr_)) {
+        if (this == &rhs || this->raw_ptr_ == rhs.raw_ptr_) {
             return *this;
         }
-        ArrayPtr empty;
+
         this->swap(rhs);
+
+        //! Я просто думал что входящий объект (rhs) лучше привести к дефолтному состоянию?
+        //! или это делать не имеет смысла?
+        ArrayPtr empty;
         rhs.swap(empty);
+
+        return *this;
     }
 
     // Прекращает владением массивом в памяти, возвращает значение адреса массива
