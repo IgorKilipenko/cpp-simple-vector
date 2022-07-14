@@ -2,6 +2,7 @@
 #include <iostream>
 #include <numeric>
 
+#include "array_ptr.h"
 #include "simple_vector.h"
 
 using namespace std;
@@ -145,6 +146,22 @@ void TestNoncopiableErase() {
     cout << "Done!" << endl << endl;
 }
 
+void ArrayPtrTest() {
+    cout << "Test ArrayPtr move constructor" << endl;
+    X* a1 = new X[]{X{1}, X{2}};
+    X* a2 = new X[5]{};
+    ArrayPtr<X> o1{a1};
+    ArrayPtr<X> o2{a2};
+
+    o1 = std::move(o2);
+    assert(o1.Get() == a2);
+
+    ArrayPtr<X> o3{std::move(o1)};
+    assert(o3.Get() == a2);
+
+    cout << "Done!" << endl << endl;
+}
+
 int main() {
     TestTemporaryObjConstructor();
     TestTemporaryObjOperator();
@@ -154,5 +171,6 @@ int main() {
     TestNoncopiablePushBack();
     TestNoncopiableInsert();
     TestNoncopiableErase();
+    ArrayPtrTest();
     return 0;
 }
