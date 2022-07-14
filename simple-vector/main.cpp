@@ -23,7 +23,12 @@ class X {
     size_t GetX() const {
         return x_;
     }
-
+    friend bool operator==(const X& lhs, const X& rhs) {
+        return lhs.x_ == rhs.x_;
+    }
+    friend bool operator!=(const X& lhs, const X& rhs) {
+        return !(lhs == rhs);
+    }
    private:
     size_t x_;
 };
@@ -155,6 +160,7 @@ void ArrayPtrTest() {
 
     o1 = std::move(o2);
     assert(o1.Get() == a2);
+    assert(o2.Get() == nullptr);
 
     ArrayPtr<X> o3{std::move(o1)};
     assert(o3.Get() == a2);
